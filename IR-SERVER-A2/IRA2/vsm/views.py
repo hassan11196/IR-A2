@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 import os
 from .helpers import  build_index, get_vector_query
-from .models import VectorSpaceModel
+from .models import VectorSpaceModel, TF_CHOICES,IDF_CHOICES,NORM_CHOICES
 from inverted_index.views import DocumentRetreival
 FILE_PATH = os.path.dirname(__file__) + '../../data/' + 'Trump Speechs/speech_'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,8 +22,15 @@ class Test(View):
 
 class Indexer(View):
     def get(self, request):
-
-        return JsonResponse({'status':True, 'message':'Indexer Status'}, status=200)
+        vsm_model_obj = VectorSpaceModel.objects.latest('id')
+        # vector_space = vsm_model_obj.data
+        data = {
+            'tf_func' : str(vsm_model_obj.tf_func),
+            'idf_func' : str(vsm_model_obj.idf_func),
+            'norm_func' : str(vsm_model_obj.norm_func),
+            'id' : str(vsm_model_obj.id)
+        }
+        return JsonResponse({'status':True, 'message':'Indexer Status','data' : data}, status=200)
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
@@ -36,12 +43,10 @@ class Indexer(View):
 
 class QueryEngine(View):
     def get(self, request):
-        query_options = [
-            ('Boolean Query', 0),
-            ('Phrasal Query', 1),
-            ('Proximity Query', 2)
-        ]
-        return JsonResponse({'status':True, 'message':'Query Engine Status', 'options':query_options}, status=200)
+        function_options = {
+            'tf':TF_CHOICES, 'idf':IDF_CHOICES,
+        }
+        return JsonResponse({'status':True, 'message':'Query Engine Status', 'data':function_options}, status=200)
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
@@ -57,7 +62,7 @@ class QueryEngine(View):
             result = get_vector_query(request.POST['query'], alpha=float(request.POST['alpha']))
             print(type(result))
             print(result)
-            if(len(result) == 0):
+            if(len(result['doc_ids']) == 0):
                 raise ValueError('Term not in any Documents.')
             if isinstance(result, set):
                 return JsonResponse({'status':True, 'message':'Query Result', 'result':list(result), 'type':'set', 'docs':list(result)}, status=200)

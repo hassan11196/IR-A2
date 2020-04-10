@@ -21,10 +21,9 @@ NORM_CHOICES = [
 ]
 
 class VectorSpaceModel(models.Model):
-   
     data = PickledObjectField()
     status = models.BooleanField(default=False, name = 'status')
     id = models.DateTimeField(auto_now_add=True, primary_key = True)
-    tf_func = models.CharField(name='tf_function', choices = TF_CHOICES, max_length=50)
-    idf_func = models.CharField(name='idf_function', choices = IDF_CHOICES, max_length=50)
-    norm_func = models.CharField(name='normalization_function', choices = NORM_CHOICES, max_length=50)
+    tf_func = models.CharField(name='tf_func', choices = TF_CHOICES, max_length=50)
+    idf_func = models.CharField(name='idf_func', choices = IDF_CHOICES, max_length=50)
+    norm_func = models.CharField(name='norm_func', choices = NORM_CHOICES, max_length=50)

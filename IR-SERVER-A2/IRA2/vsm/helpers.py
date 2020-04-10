@@ -41,6 +41,16 @@ class VectorSpace(object):
     def tf_natural(self, tf, doc):
         #return tf
         return tf / sum(doc.values())
+    def tf_logarithm(self, tf, doc):
+    
+        return (0 if tf==0 else 1 + math.log10(tf))
+    def tf_augmented(self, tf, doc):
+        #return tf
+        return (0.5 + ((0.5 * tf)/(self.find_max_tf(doc))))
+    def tf_boolean(self, tf, doc):
+        #return tf
+        return (1 if tf > 0 else 0)
+
     def idf_no(self, term):
         return 1
     def idf_idf(self, term):
@@ -52,11 +62,10 @@ class VectorSpace(object):
     def __init__(self, tf_func = 'natural', idf_func = 'idf', norm_func='none'):
         self.tf_functions = {
             'natural': self.tf_natural,
-            # 'logarithm': lambda tf, doc : (0 if tf==0 else 1 + math.log10(tf)),
-            # 'augmented': lambda tf, doc : (0.5 + ((0.5 * tf)/(self.find_max_tf(doc)))),
-            # 'boolean' : lambda tf, doc : (1 if tf > 0 else 0),
-            # 'log_ave': self.tf_log_ave
-            
+            'logarithm': self.tf_logarithm ,
+            'augmented': self.tf_augmented ,
+            'boolean' : self.tf_boolean ,
+            'log_ave': self.tf_log_ave   
         }
         self.idf_functions = {
             'no': self.idf_no,
@@ -80,6 +89,7 @@ class VectorSpace(object):
         self.occurrance2 = {}
         self.cdocs = {}
         self.index = {}
+        self.func_strings = {'tf_func' : tf_func, 'idf_func':idf_func, 'norm_func':norm_func}
     def tf_log_ave(self, tf, doc):
 #         print(tf)
         return ( (1+math.log10((tf*sum(doc.values()))+1)) / (1 + math.log10(self.find_avg_tf(doc))))
@@ -347,7 +357,7 @@ def get_vector_query(query, alpha=0.0005):
         for query in query_terms: 
             if query in vector_space.occurrance2[docId].keys():
                 if docId in occurance.keys():
-                    occourance[docId].append(vector_space.occurrance2[docId][query])
+                    occurance[docId].append(vector_space.occurrance2[docId][query])
                 else:
                     occurance[docId] = []
                     occurance[docId].append(vector_space.occurrance2[docId][query])
