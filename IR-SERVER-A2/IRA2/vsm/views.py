@@ -48,29 +48,29 @@ class QueryEngine(View):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
-        # try:
-        result = []
-        print(request.POST)
-        if request.POST['query'] == '':
-            raise ValueError('Invalid Query')
-        
-        result = get_vector_query(request.POST['query'], alpha=float(request.POST['alpha']))
-        print(type(result))
-        print(result)
-        if(len(result) == 0):
-            raise ValueError('Term not in any Documents.')
-        if isinstance(result, set):
-            return JsonResponse({'status':True, 'message':'Query Result', 'result':list(result), 'type':'set', 'docs':list(result)}, status=200)
-        if isinstance(result, dict):
+        try:
+            result = []
+            print(request.POST)
+            if request.POST['query'] == '':
+                raise ValueError('Invalid Query')
             
-            # res = result.occurrance
-            # doc_ids = list(map(lambda pos: pos,result.occurrance.keys()))
+            result = get_vector_query(request.POST['query'], alpha=float(request.POST['alpha']))
+            print(type(result))
+            print(result)
+            if(len(result) == 0):
+                raise ValueError('Term not in any Documents.')
+            if isinstance(result, set):
+                return JsonResponse({'status':True, 'message':'Query Result', 'result':list(result), 'type':'set', 'docs':list(result)}, status=200)
+            if isinstance(result, dict):
+                
+                # res = result.occurrance
+                # doc_ids = list(map(lambda pos: pos,result.occurrance.keys()))
 
-            return JsonResponse({'status':True, 'message':'Query Result', 'result':result['occurrance'], 'type':'PostingList', 'docs':result['doc_ids']}, status=200)
-        else:
-            return JsonResponse({'status':True, 'message':'Something Went Wrong', 'result':list(result), 'type':'Unknown'}, status=200)
-            
+                return JsonResponse({'status':True, 'message':'Query Result', 'result':result['occurrance'], 'type':'PostingList', 'docs':result['doc_ids']}, status=200)
+            else:
+                return JsonResponse({'status':True, 'message':'Something Went Wrong', 'result':list(result), 'type':'Unknown'}, status=200)
+                
 
-        # except BaseException as e:
-        #     print(e)
-        #     return JsonResponse({'status':False, 'message':str(e), 'result' : ''}, status=400)
+        except BaseException as e:
+            print(e)
+            return JsonResponse({'status':False, 'message':str(e), 'result' : ''}, status=400)

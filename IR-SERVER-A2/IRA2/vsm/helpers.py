@@ -352,7 +352,7 @@ def get_vector_query(query, alpha=0.0005):
                     occurance[docId] = []
                     occurance[docId].append(vector_space.occurrance2[docId][query])
     result = {
-        'doc_ids' : sorted(result,key= lambda x:x[1]),
+        'doc_ids' : sorted(result,key= lambda x:x[1], reverse=True),
         'occurrance' : occurance
     }
     return result
