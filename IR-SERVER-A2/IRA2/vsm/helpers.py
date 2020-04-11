@@ -256,7 +256,7 @@ class VectorSpace(object):
 
 
 def build_index(tf_func='natural',idf_func='idf', norm_func='none'):
-    BASE_URL = os.path.join(BASE_DIR, 'IRA1/static')
+    BASE_URL = os.path.join(BASE_DIR, 'IRA2/static')
     print(BASE_URL)
     
     vocab = set()
