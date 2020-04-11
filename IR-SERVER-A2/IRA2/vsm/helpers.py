@@ -12,7 +12,8 @@ from copy import deepcopy
 from nltk.stem import WordNetLemmatizer
 
 from vsm.models import VectorSpaceModel
-
+FILE_PATH = os.path.dirname(__file__) + '../../data/' + 'Trump Speechs/speech_'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 lem = WordNetLemmatizer()
 # Remove Punctuation
 def remove_punctuation(word):
@@ -255,9 +256,9 @@ class VectorSpace(object):
 
 
 def build_index(tf_func='natural',idf_func='idf', norm_func='none'):
-    path_to_data = os.path.dirname(__file__) + '/../../data/'
-    print(os.path.dirname(__file__))
-    print(path_to_data)
+    BASE_URL = os.path.join(BASE_DIR, 'IRA1/static')
+    print(BASE_URL)
+    
     vocab = set()
     doc_contents = []
     vector_space = VectorSpace(tf_func=tf_func,idf_func=idf_func, norm_func=norm_func)
@@ -269,7 +270,7 @@ def build_index(tf_func='natural',idf_func='idf', norm_func='none'):
 
     lem = WordNetLemmatizer() 
     stop_words = set()
-    with open(path_to_data+'Stopword-List.txt', 'r') as stop_word_file:
+    with open(BASE_URL+'/Stopword-List.txt', 'r') as stop_word_file:
         lines = stop_word_file.readlines()
         for line in lines:
             stop_words.add(line.split('\n')[0])
@@ -278,7 +279,7 @@ def build_index(tf_func='natural',idf_func='idf', norm_func='none'):
 
     for file_number in range(0, 56):
         vector_space.create_doc(file_number)
-        with open(path_to_data + f'Trump Speechs/speech_{file_number}.txt', 'r') as file1:
+        with open(BASE_URL +f'/speech_{file_number}.txt', 'r') as file1:
             lines = file1.readlines()
             print(f'File Number : speech_{file_number}.txt' )
             print(lines[0])
