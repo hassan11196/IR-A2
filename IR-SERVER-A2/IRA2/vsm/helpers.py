@@ -255,7 +255,7 @@ class VectorSpace(object):
 
 
 def build_index(tf_func='natural',idf_func='idf', norm_func='none'):
-    path_to_data = os.path.dirname(__file__) + '../../data/'
+    path_to_data = os.path.dirname(__file__) + '/../../data/'
     print(os.path.dirname(__file__))
     print(path_to_data)
     vocab = set()
