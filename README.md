@@ -25,10 +25,10 @@ A Web Application is hosted at  [https://ira2.netlify.com/#/](https://ira2.netli
     - Repo Link : [Click Here](https://github.com/hassan11196/IR-WEB-A2)
   
 ### ScreenShots:
-- ![](Submission/Screenshots/Annotation%202020-04-10%20234906.png)
-- ![](Submission/Screenshots/ss1.png)
-- ![](Submission/Screenshots/ss2.png)
-- ![](Submission/Screenshots/ss3.png)
+- ![](Screenshots/Annotation%202020-04-10%20234906.png)
+- ![](Screenshots/ss1.png)
+- ![](Screenshots/ss2.png)
+- ![](Screenshots/ss3.png)
 
 
 
